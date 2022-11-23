@@ -1,0 +1,80 @@
+
+
+terraform vpcmodules
+-------------------------------
+
+mkdir modules
+cd modules
+mkdir vpcmodules
+cd vpcmodules
+
+touch main.tf
+      variable.tf
+      output.tf
+
+vi main.tf
+---------------- 
+
+resource "aws_vpc" "first_vpc" {
+
+cidr_block = "10.0.0.0/16"
+
+tags = {
+Name = "terraform_vpc"
+  }
+  }
+
+resource "aws_subnet" "pub_sub" {
+
+vpc_id     = aws_vpc.first_vpc.id
+cidr_block = var.pub_sub_cidr
+
+tags = {
+Name = "pub_sub"
+
+  } 
+ }
+
+
+resource "aws_subnet" "pri_sub" {
+
+vpc_id     = aws_vpc.first_vpc.id
+cidr_block = var.pri_sub_cidr
+
+tags = {
+Name = "pri_sub"
+
+  } 
+ }
+
+
+:wq!
+
+
+vi variable.tf
+-----------------------
+
+variable "vpc_cidr" {
+
+default = "10.0.0.0/16"
+
+}
+
+
+variable "pub_sub_cidr" {
+
+default = "10.0.4.0/24"
+
+}
+
+
+variable "pri_sub_cidr" {
+
+default = "10.0.6.0/24"
+
+}
+
+
+:wq!
+
+cd ../..
