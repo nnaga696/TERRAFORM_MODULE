@@ -1,0 +1,104 @@
+TERRAFORM MODULES
+----------------------
+create ec2 instances
+connect to server
+
+change root user
+---------------
+sudo su
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo https://rpm.releases.hashicorp.com/AmazonLinux/hashicorp.repo
+sudo yum -y install terraform
+terraform -help
+
+aws configure
+                    GO TO IAM AND CREATE USER PROGRAMATIC ACCESS
+Enter access key:
+Enter secret key:
+Enter region : 
+
+vi main.tf
+-----------
+provider "aws" {
+
+region = "us-east-1"
+ 
+}
+
+:wq!
+
+terraform init
+terraform plan
+terraform apply
+
+create directories
+--------------------
+modules/ec2modules
+--------------------------------
+mkdir modules
+cd modules
+mkdir ec2modules
+cd ec2modules
+
+using touch command & create a file "touch" <filenmae>
+---------
+touch main.tf
+      variable.tf
+      output.tf
+
+vi main.tf
+--------
+resource "aws_instance" "terraform_server" {
+
+ami           = var.ami_id
+instance_type = var.instancesize
+
+tags = {
+Name = "terraform_ec2"
+
+ }
+}
+
+ENTER ESC ON KEYPAD
+
+:wq!
+
+
+
+vi variable.tf
+---------------------
+
+variable "ami_id" {
+
+default = "ami-0b0dcb5067f052a63"
+
+}
+
+variable "instancesize" {
+
+default = "t2.micro" 
+
+}
+
+:wq!
+
+back to home directory
+
+cd ../..
+
+vi main.tf
+---------------   ---add some content
+
+module "module1' {
+
+source = "./modules/ec2modules"
+
+}
+
+:wq!
+
+
+terraform init
+terraform plan
+terraform apply
+
